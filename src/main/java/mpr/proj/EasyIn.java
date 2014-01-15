@@ -1,6 +1,10 @@
 package mpr.proj;
 
 import java.io.*;
+import java.sql.Date;
+
+import mpr.proj.pedigree.Horse;
+import mpr.proj.pedigree.Sex;
 
 public abstract class EasyIn {
 
@@ -21,6 +25,14 @@ public abstract class EasyIn {
             }
         }
         return s;
+    }
+    
+    public static void clear(){
+    	try {
+			Runtime.getRuntime().exec("cls");
+		} catch (IOException e) {
+			
+		}	
     }
 
     public static int getInt() {
@@ -175,5 +187,6 @@ public abstract class EasyIn {
             }
         }
     }
+
 
 }

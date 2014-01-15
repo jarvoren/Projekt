@@ -10,11 +10,7 @@ public class Main {
       int w=0;
     	do{
     		
-    	try {
-			Runtime.getRuntime().exec("cls");
-		} catch (IOException e) {
-			
-		}	
+    	
     	System.out.println("Menu");
         System.out.println("1) Dodaj wpis");
         System.out.println("2) Wypisz tabele");
