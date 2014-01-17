@@ -133,6 +133,14 @@ private static Horse pobierzKonia(String imieKonia,
 	
 	}
 	con.close();
+	for(Horse h : dane)
+	{
+		if(h.getName()== imieKonia && h.getDob()== dataUrodzeniakonia)
+		{
+			con.close();
+			return h;
+		}
+	}
 	
 }
 catch (Exception ex)	{
@@ -433,7 +441,7 @@ public static void pokazHodowcow() {
 		ResultSet rs = stmt.executeQuery(queryStr);
 		while(rs.next())
 		{
-			System.out.println();	
+			System.out.println(rs.getInt(0)+"   "+"  "+rs.getString(1)+"   "+pobierzKraj(rs.getInt(2)).getName());	
 		}
 		
 	}
@@ -444,7 +452,69 @@ public static void pokazHodowcow() {
 }
 
 public static void modyfikujKonia() {
-	// TODO Auto-generated method stub
+	System.out.println("Podaj numer wpisu do edycji");
+	int wybor = EasyIn.getInt();
+	Horse kon = pobierzKoniaZBazy(wybor);
+	System.out.println("Podaj imie konia");
+	kon.setName(EasyIn.getString());
+	System.out.println("Podaj płeć konia 1) Gelding 2) Mare 3) Stallion");
+	kon.setSex(Sex.valueOf(EasyIn.getInt()));
+	
+	kon.setDob(pobierzDateUrodzeniaOdUzytkownika());
+	
+	
+	System.out.println("Podaj kolor konia");
+	
+	String kolor = EasyIn.getString();
+	kolor.toLowerCase();
+	if(sprawdzCzyKolorJestWBazie(kolor)){
+		kon.setColor(pobierzKolorZBazy(kolor));
+	}
+	else
+	{
+		System.out.println("Nie ma takiego koloru w bazie dodaj kolor i sproboj ponownie");
+		return;
+	}
+	System.out.println("Podaj imie ojca a nastepnie date jego urodzenia");
+	String imieOjca = EasyIn.getString();
+	DateOfBirth dataUrodzeniaOjca = pobierzDateUrodzeniaOdUzytkownika();
+	
+	kon.setSire(pobierzKonia(imieOjca , dataUrodzeniaOjca));
+	System.out.println("Podaj imie matki a nastepnie date jej urodzenia");
+	String imieMatki = EasyIn.getString();
+	DateOfBirth dataUrodzeniaMatki = pobierzDateUrodzeniaOdUzytkownika();
+	kon.setDam(pobierzKonia(imieMatki , dataUrodzeniaMatki));
+	System.out.println("Podaj imie hodowcy");
+	String imieHodowcy = EasyIn.getString();
+	kon.setBreeder(pobierzHodowceZBazy(imieHodowcy));
+	if(kon.getBreeder() == null)
+	{
+		System.out.println("Nie ma takiego hodowcy w bazie , dodaj go i sproboj ponownie"); 
+		return;
+	}
+	modyfikujWpisKonia(kon);
+	
+}
+
+private static void modyfikujWpisKonia(Horse kon) {
+	try        {
+        Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+        String queryStr = "UPDATE HORSE SET NAME=(?), SEX=(?), COLOR=(?), DOB=(?), DAM=(?), SIRE=(?), BREEDER=(?) WHERE ID=(?)";
+        PreparedStatement stmt = con.prepareStatement(queryStr);
+        stmt.setString(1, kon.getName());
+        stmt.setInt(2, kon.getIntOfSex() );
+        stmt.setInt(3, kon.getColor().getID());
+        stmt.setString(4, kon.getDob().getDate().toString());
+        stmt.setInt(6, (int) kon.getDam().getID());
+        stmt.setInt(7,(int) kon.getSire().getID());
+        stmt.setInt(8, (int) kon.getBreeder().getId());
+        stmt.setInt(9,(int) kon.getID());
+        stmt.executeUpdate(); 
+        
+}
+catch (Exception ex) {
+        System.out.println(ex.getMessage());
+}
 	
 }
 
@@ -458,7 +528,7 @@ public static void pokazKonia() {
 	
 }
 
-public static void wyszukajPotomstoKonia() {
+public static void wyszukajPotomstwoKonia() {
 	// TODO Auto-generated method stub
 	
 }

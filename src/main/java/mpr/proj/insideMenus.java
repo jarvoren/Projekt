@@ -152,7 +152,7 @@ public abstract class insideMenus {
 	public static void wyszukiwaniePotomstwa(){
 		
 		EasyIn.clear();
-		dataBaseOperations.wyszukajPotomstoKonia();
+		dataBaseOperations.wyszukajPotomstwoKonia();
 		
 	}
 	public static void generowanieRodowodu(){
