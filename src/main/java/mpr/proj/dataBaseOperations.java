@@ -350,16 +350,96 @@ private static Country pobierzKraj(String nazwaKraju) {
 }
 
 public static void dodajKraj() {
-	// TODO Auto-generated method stub
+	System.out.println("Podaj nazwę kraju jaki chcesz dodać");
+	String nazwa = EasyIn.getString();
+	System.out.println("Podaj Kod Kraju");
+	String kod = EasyIn.getString();
+
+	
+	try{
+		
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+		
+		String queryStr = "INSERT INTO COUNTRY (NAME , CODE) VALUES (?,?)";
+		PreparedStatement stmt = con.prepareStatement(queryStr);
+		stmt.setString(1, nazwa);
+        stmt.setString(2, kod);
+        	
+		stmt.executeUpdate();
+			
+		con.close();
+		}
+		
+		
+		
+
+	catch (Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
 	
 }
 
 public static void pokazKonie() {
+	try	{
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");
+		String queryStr = "SELECT * FROM HORSE";
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(queryStr);
+		while(rs.next())
+		{
+			System.out.println(rs.getInt(0)+"  "+rs.getString(1)+"  "+Sex.valueOf(rs.getInt(2)).toString()+"  "+ pobierzKolorZBazy(rs.getInt(3)).getLname()+"  "+ rs.getDate(4).toString()+"Matka: "+ pobierzKoniaZBazy(rs.getInt(6)).getName()+"  Ojciec:  "+pobierzKoniaZBazy(rs.getInt(7)).getName()+"  Hodowca:  "+pobierzHodowce(rs.getInt(8)));	
+		}
+		
+	}
+	catch (Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
+	
 	
 }
 
+private static Color pobierzKolorZBazy(int int1) {
+	try{
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+		Set<Color> dane = new HashSet<Color>();
+		String queryStr = "SELECT * FROM COLOR";
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(queryStr);
+		while(rs.next())	{
+			dane.add(new Color(rs.getLong(0), rs.getString(1), rs.getString(2)));
+		}
+		for(Color c: dane)
+		{
+			if(c.getID()==int1)
+			{
+				return c;
+			}
+		}
+		con.close();
+		
+	}
+	catch(Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
+	return null;
+	}
+
+
 public static void pokazHodowcow() {
-	// TODO Auto-generated method stub
+	try	{
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");
+		String queryStr = "SELECT * FROM BREEDER";
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(queryStr);
+		while(rs.next())
+		{
+			System.out.println();	
+		}
+		
+	}
+	catch (Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
 	
 }
 
