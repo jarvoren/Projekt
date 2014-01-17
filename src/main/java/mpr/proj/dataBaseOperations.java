@@ -22,15 +22,9 @@ public static void dodajKonia() {
 	String imie = EasyIn.getString();
 	System.out.println("Podaj płeć konia 1) Gelding 2) Mare 3) Stallion");
 	Sex plec = Sex.valueOf(EasyIn.getInt());
-	System.out.println("Podaj rok urodzenia konia");
-	Date dataUrodzin = null;
-	dataUrodzin.setYear(EasyIn.getInt());
-	System.out.println("Podaj miesiac urodzenia konia");
-	dataUrodzin.setMonth(EasyIn.getInt());
-	System.out.println("Podaj dzien urodzenia konia");
-	dataUrodzin.setDate(EasyIn.getInt());
-	DateOfBirth dataUrodzinFormated = new DateOfBirth();
-	dataUrodzinFormated.setDate(dataUrodzin, false);
+	
+	DateOfBirth dataUrodzinFormated = pobierzDateUrodzeniaOdUzytkownika();
+	
 	
 	System.out.println("Kolor konia");
 	Color kolorFormated = null;
@@ -44,11 +38,65 @@ public static void dodajKonia() {
 		System.out.println("Nie ma takiego koloru w bazie dodaj kolor i sproboj ponownie");
 		return;
 	}
+	System.out.println("Podaj imie ojca a nastepnie date jego urodzenia");
+	String imieOjca = EasyIn.getString();
+	DateOfBirth dataUrodzeniaOjca = pobierzDateUrodzeniaOdUzytkownika();
+	
+	Horse ojciec = pobierzKonia(imieOjca , dataUrodzeniaOjca);
+	System.out.println("Podaj imie matki a nastepnie date jej urodzenia");
+	String imieMatki = EasyIn.getString();
+	DateOfBirth dataUrodzeniaMatki = pobierzDateUrodzeniaOdUzytkownika();
+	Horse matka = pobierzKonia(imieMatki , dataUrodzeniaMatki);
+	
+	
+	Horse kon = new Horse(0, imie, plec, dataUrodzinFormated, kolorFormated,  matka, ojciec, null);
+}
+
+private static Horse pobierzKonia(String imieKonia,
+		DateOfBirth dataUrodzeniakonia) {
+	try{
+	Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+	Set<Horse> dane = new HashSet<Horse>();
+	String queryStr = "SELECT * FROM HORSE";
+	Statement stmt = con.createStatement();
+	ResultSet rs = stmt.executeQuery(queryStr);
+	while(rs.next())	{
+		dane.add(new Horse(rs.getLong(0), rs.getString(1), Sex.valueOf(rs.getInt(2)), new DateOfBirth(rs.getDate(4)), new Color(rs.getInt(3)), pobierzKoniaZBazy(rs.getInt(6)), new Horse(rs.getInt(7)),new Breeder(rs.getInt(8)) ));
+	
+	}
+	con.close();
+	
+}
+catch (Exception ex)	{
+	System.out.println(ex.getMessage());
+}
+
+return null;
 	
 	
 	
 	
-	Horse kon = new Horse(0, imie, plec, dataUrodzinFormated, kolorFormated, kon, kon, null);
+	
+	
+	
+}
+
+private static Horse pobierzKoniaZBazy(int int1) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+private static DateOfBirth pobierzDateUrodzeniaOdUzytkownika() {
+	Date dataUrodzin = null;
+	System.out.println("Podaj rok urodzenia konia");
+	dataUrodzin.setYear(EasyIn.getInt());
+	System.out.println("Podaj miesiac urodzenia konia");
+	dataUrodzin.setMonth(EasyIn.getInt());
+	System.out.println("Podaj dzien urodzenia konia");
+	dataUrodzin.setDate(EasyIn.getInt());
+	DateOfBirth dataUrodzinFormated = null;
+	dataUrodzinFormated.setDate(dataUrodzin, false);
+	return dataUrodzinFormated;
 }
 
 private static Color pobierzKolorZBazy(String kolor) {
@@ -118,19 +166,7 @@ public static void dodajKraj() {
 }
 
 public static void pokazKonie() {
-	Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 	
-
-	List<Horse> lista1 = new ArrayList<Horse>();
-	String queryStr = "SELECT * FROM HORSE";
-	Statement stmt = con.createStatement();
-	ResultSet rs = stmt.executeQuery(queryStr);
-	while(rs.next())	{
-		Sex.STALLION.toString();
-		Horse e = new Horse(rs.getLong("ID"), rs.getString(1), Sex.valueOf(rs.getInt("SEX")), rs.getDate(3),new Color ( rs.getString("COLOR")), e, e, null);
-		lista1.add(e);
-	}
-
 }
 
 public static void pokazHodowcow() {
