@@ -12,9 +12,10 @@ public class DateOfBirth {
     }
     public String getDate() {
         if (yearOnly) {
-            return "2013";
+        	Integer rok = date.getYear();
+            return rok.toString();
         } else {
-            return "2013-12-14";
+            return date.toString();
         }
     }
 }

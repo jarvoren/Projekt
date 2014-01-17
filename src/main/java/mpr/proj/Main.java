@@ -2,7 +2,9 @@ package mpr.proj;
 import java.lang.*;
 import java.io.IOException;
 import java.io.ObjectInputStream.GetField;
+
 import mpr.proj.*;
+
 
 
 public class Main {
@@ -10,6 +12,7 @@ public class Main {
       int w=0;
     	do{
     		
+    	
     	
     	System.out.println("Menu");
         System.out.println("1) Dodaj wpis");
