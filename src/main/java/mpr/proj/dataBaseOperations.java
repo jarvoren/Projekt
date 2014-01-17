@@ -519,23 +519,189 @@ catch (Exception ex) {
 }
 
 public static void modyfikujHodowce() {
-	// TODO Auto-generated method stub
+	System.out.println("Podaj numer wpisu do edycji");
+	int wybor = EasyIn.getInt();
+	Breeder hodowca = pobierzHodowce(wybor);
+	
+	System.out.println("Podaj imie hodowcy");
+	String imie = EasyIn.getString();
+	System.out.println("Podaj kraj pochodzenia hodowcy");
+	String nazwaKraju = EasyIn.getString();
+	nazwaKraju.toUpperCase();
+	Country kraj = pobierzKraj(nazwaKraju);
+	if (kraj==null)
+	{
+		System.out.println("Nie ma takiego kraju w bazie , dopisz kraj i sproboj ponownie");
+		return;
+	}
+	try        {
+        Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+        String queryStr = "UPDATE BREEDER SET NAME=(?), COUNTRY=(?) WHERE ID=(?)";
+        PreparedStatement stmt = con.prepareStatement(queryStr);
+        stmt.setString(1, imie);
+        stmt.setString(2, kraj.getName());
+        stmt.setInt(3, wybor);
+        stmt.executeUpdate(); 
+        
+}
+catch (Exception ex) {
+        System.out.println(ex.getMessage());
+}
+	
+	
+	
+	
 	
 }
 
 public static void pokazKonia() {
-	// TODO Auto-generated method stub
+
+	System.out.println("Wyszukaj konia po 1) Imieniu 2) ID");
+	switch(EasyIn.getInt())
+	{
+	case 1:
+	{
+		try{
+		System.out.println("Podaj imie konia");
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");
+		String queryStr = "SELECT * FROM HORSE WHERE NAME="+EasyIn.getString();
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(queryStr);
+		while(rs.next())
+		{
+			System.out.println(rs.getInt(0)+"  "+rs.getString(1)+"  "+Sex.valueOf(rs.getInt(2)).toString()+"  "+ pobierzKolorZBazy(rs.getInt(3)).getLname()+"  "+ rs.getDate(4).toString()+"Matka: "+ pobierzKoniaZBazy(rs.getInt(6)).getName()+"  Ojciec:  "+pobierzKoniaZBazy(rs.getInt(7)).getName()+"  Hodowca:  "+pobierzHodowce(rs.getInt(8)));
+		}
+		con.close();
+		
+	}
+	catch(Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
+	
+	
+		
+		break;
+	}
+	case 2:
+	{
+		System.out.println("Podaj ID konia");
+		int wybor = EasyIn.getInt();
+		
+		wyswietlKoniaPoId(wybor);
+		
+		break;
+	}
+	default: {System.out.println("Kiepski wybor");}
+	}
+	
+}
+
+private static void wyswietlKoniaPoId(int wybor) {
+	try{
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");
+		String queryStr = "SELECT * FROM HORSE WHERE ID="+wybor;
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(queryStr);
+		while(rs.next())
+		{
+			System.out.println(rs.getInt(0)+"  "+rs.getString(1)+"  "+Sex.valueOf(rs.getInt(2)).toString()+"  "+ pobierzKolorZBazy(rs.getInt(3)).getLname()+"  "+ rs.getDate(4).toString()+"Matka: "+ pobierzKoniaZBazy(rs.getInt(6)).getName()+"  Ojciec:  "+pobierzKoniaZBazy(rs.getInt(7)).getName()+"  Hodowca:  "+pobierzHodowce(rs.getInt(8)));
+		}
+		con.close();
+		
+	}
+	catch(Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
 	
 }
 
 public static void wyszukajPotomstwoKonia() {
-	// TODO Auto-generated method stub
+	System.out.println("Podaj głębokość wyszukiwania");
+	int glebokosc = EasyIn.getInt();
+	System.out.println("Podaj id konia którego potomkow szukamy");
+	int wybor = EasyIn.getInt();
+	System.out.println("Potomkowie konia "+pobierzKoniaZBazy(wybor).getName());
+	wyszukajPotomstwo(glebokosc , wybor);
 	
+}
+
+private static void wyszukajPotomstwo(int glebokosc, int wybor) {
+	glebokosc--;
+	Set<Horse> dane = pobierzKolekcjeKonizBazy();
+	for(Horse h : dane)
+	{
+		if(wybor==h.getDam().getID())
+		{
+			System.out.println(h.getName());
+			if(glebokosc!=0){wyszukajPotomstwo(glebokosc, (int) h.getID());}
+		}
+		if(wybor==h.getSire().getID())
+		{
+			System.out.println(h.getName());
+			if(glebokosc!=0){wyszukajPotomstwo(glebokosc, (int) h.getID());}
+		}
+	}
+	
+}
+
+private static Set<Horse> pobierzKolekcjeKonizBazy() {
+	try{
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+		Set<Horse> dane = new HashSet<Horse>();
+		String queryStr = "SELECT * FROM HORSE";
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(queryStr);
+		while(rs.next())	{
+			dane.add(new Horse(rs.getLong(0), rs.getString(1), Sex.valueOf(rs.getInt(2)), new DateOfBirth(rs.getDate(4)), new Color(rs.getInt(3)), pobierzKoniaZBazy(rs.getInt(7)), pobierzKoniaZBazy(rs.getInt(6)),pobierzHodowce(rs.getInt(8)) ));
+		
+		}
+		con.close();
+		return dane;
+		
+		
+		
+		
+	}
+	catch(Exception ex)	{
+			System.out.println(ex.getMessage());
+		}
+	return null;
 }
 
 public static void wygenerujRodowodKonia() {
 	// TODO Auto-generated method stub
 	
+}
+
+public static void kasujKonia() {
+	System.out.println("Podaj id konia do skasowania");
+	int wybor = EasyIn.getInt();
+	 try        {
+         Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+         String queryStr = "DELETE FROM HORSE WHERE ID=(?)";
+         PreparedStatement stmt = con.prepareStatement(queryStr);
+         stmt.setInt(1, wybor);
+         
+ }
+ catch (Exception ex) {
+         System.out.println(ex.getMessage());
+ }        
+	
+}
+
+public static void kasujHodowce() {
+	System.out.println("Podaj id Hodowcy do skasowania");
+	int wybor = EasyIn.getInt();
+	 try        {
+         Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+         String queryStr = "DELETE FROM BREEDER WHERE ID=(?)";
+         PreparedStatement stmt = con.prepareStatement(queryStr);
+         stmt.setInt(1, wybor);
+         
+ }
+	 catch (Exception ex) {
+         System.out.println(ex.getMessage());
+ }   
 }
 
 	

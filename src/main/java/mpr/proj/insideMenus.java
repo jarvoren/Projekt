@@ -119,8 +119,8 @@ public abstract class insideMenus {
 	public static void kasowanieDanych(){
 		EasyIn.clear();
 		System.out.println("Menu");
-		System.out.println("1) Modyfikuj wpis konia");
-		System.out.println("2) Modyfikuj wpis hodowcy");
+		System.out.println("1)Skasuj wpis konia");
+		System.out.println("2)Skasuj wpis hodowcy");
 		
 		switch(EasyIn.getInt())
 		{
@@ -128,14 +128,14 @@ public abstract class insideMenus {
 		case 1:
 		{
 			EasyIn.clear();
-			dataBaseOperations.modyfikujKonia();
+			dataBaseOperations.kasujKonia();
 			break;
 		}
 		
 		case 2:
 		{
 			EasyIn.clear();
-			dataBaseOperations.modyfikujHodowce();
+			dataBaseOperations.kasujHodowce();
 			break;	
 		}
 		
