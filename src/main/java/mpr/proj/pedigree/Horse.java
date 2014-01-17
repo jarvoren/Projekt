@@ -85,4 +85,21 @@ public void setBreeder(Breeder breeder){
 public Breeder getBreeder()        {
         return breeder;
 }
+
+public int getIntOfSex() {
+	if(this.sex==Sex.MARE)
+	{
+		return 0;
+	}else if(this.sex==Sex.GELDING)
+	{
+		return 1;
+	}else if(this.sex==Sex.STALLION)
+	{
+		return 2;
+	}
+	else
+	{
+		return 1500;
+	}
+}
 }

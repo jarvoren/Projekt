@@ -63,4 +63,9 @@ public class Color {
 		return sname;
 	}
 
+	public int getID() {
+		return (int) this.id;
+		
+	}
+
 }

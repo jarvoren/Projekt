@@ -5,6 +5,7 @@ package mpr.proj;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -50,30 +51,72 @@ public static void dodajKonia() {
 	System.out.println("Podaj imie hodowcy");
 	String imieHodowcy = EasyIn.getString();
 	Breeder hodowca = pobierzHodowceZBazy(imieHodowcy);
+	if(hodowca == null)
+	{
+		System.out.println("Nie ma takiego hodowcy w bazie , dodaj go i sproboj ponownie"); 
+		return;
+	}
 	
 	
-	Horse kon = new Horse(0, imie, plec, dataUrodzinFormated, kolorFormated,  matka, ojciec, null);
+	Horse kon = new Horse(0, imie, plec, dataUrodzinFormated, kolorFormated,  matka, ojciec, hodowca);
+	
+	wpiszKoniaDoBazy(kon);
+}
+
+private static void wpiszKoniaDoBazy(Horse kon) {
+	try{
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+		
+		String queryStr = "INSERT INTO HORSE (NAME , SEX, COLOR , DOB, YEARONLY, DAM, SIRE , BREEDER) VALUES(?,?,?,?,?,?,?,?)";
+		PreparedStatement stmt = con.prepareStatement(queryStr);
+		stmt.setString(1, kon.getName());
+        stmt.setInt(2, kon.getIntOfSex());
+        stmt.setInt(3, pobierzKolorZBazy(kon.getColor().getLname()).getID());
+        stmt.setString(4, kon.getDob().toString());
+        stmt.setBoolean(5, false);
+        stmt.setInt(6, (int) kon.getDam().getID());
+        stmt.setInt(7, (int) kon.getSire().getID());
+        stmt.setInt(8, (int) kon.getBreeder().getId());
+		
+		stmt.executeUpdate();
+		
+		
+		con.close();
+		}
+		
+		
+		
+
+	catch (Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
+	
+	
 }
 
 private static Breeder pobierzHodowceZBazy(String imieHodowcy) {
 	try{
 		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
-		Set<Breeder> dane = new HashSet<Breeder>();
+		
 		String queryStr = "SELECT * FROM BREEDER";
 		Statement stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery(queryStr);
 		while(rs.next())	{
-			dane.add(new Breeder(rs.getLong(0), rs.getString(1), pobierzKraj(rs.getInt(3))) );
-		
+			if(rs.getString(1)==imieHodowcy){
+			con.close();
+			return new Breeder(rs.getLong(0), rs.getString(1), pobierzKraj(rs.getInt(3)));
+			}
 		}
 		con.close();
+		return null;
 		
 	}
 	catch (Exception ex)	{
 		System.out.println(ex.getMessage());
 	}
-
 	return null;
+
+	
 	
 }
 
@@ -248,8 +291,62 @@ public static boolean sprawdzCzyKolorJestWBazie(String kolor) {
 }
 
 public static void dodajHodowce() {
-	// TODO Auto-generated method stub
+	System.out.println("Podaj imie hodowcy");
+	String imie = EasyIn.getString();
+	System.out.println("Podaj kraj pochodzenia hodowcy");
+	String nazwaKraju = EasyIn.getString();
+	nazwaKraju.toUpperCase();
+	Country kraj = pobierzKraj(nazwaKraju);
+	if (kraj==null)
+	{
+		System.out.println("Nie ma takiego kraju w bazie , dopisz kraj i sproboj ponownie");
+		return;
+	}
 	
+	
+	try{
+		
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+		
+		String queryStr = "INSERT INTO BEEDER (NAME , COUNTRY) VALUES (?,?)";
+		PreparedStatement stmt = con.prepareStatement(queryStr);
+		stmt.setString(1, imie);
+        stmt.setInt(2, kraj.getId());
+        
+		
+		stmt.executeUpdate();
+		
+		
+		con.close();
+		}
+		
+		
+		
+
+	catch (Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
+}
+
+private static Country pobierzKraj(String nazwaKraju) {
+	try	{
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");
+		String queryStr = "SELECT * FROM COUNTRY";
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(queryStr);
+		while(rs.next())
+		{
+			if(rs.getString(1)==nazwaKraju)
+			{
+				return new Country(rs.getInt(0),rs.getString(1), rs.getString(2));
+			}
+		}
+		
+	}
+	catch (Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
+	return null;
 }
 
 public static void dodajKraj() {
