@@ -26,7 +26,7 @@ public static void dodajKonia() {
 	DateOfBirth dataUrodzinFormated = pobierzDateUrodzeniaOdUzytkownika();
 	
 	
-	System.out.println("Kolor konia");
+	System.out.println("Podaj kolor konia");
 	Color kolorFormated = null;
 	String kolor = EasyIn.getString();
 	kolor.toLowerCase();
@@ -47,9 +47,34 @@ public static void dodajKonia() {
 	String imieMatki = EasyIn.getString();
 	DateOfBirth dataUrodzeniaMatki = pobierzDateUrodzeniaOdUzytkownika();
 	Horse matka = pobierzKonia(imieMatki , dataUrodzeniaMatki);
+	System.out.println("Podaj imie hodowcy");
+	String imieHodowcy = EasyIn.getString();
+	Breeder hodowca = pobierzHodowceZBazy(imieHodowcy);
 	
 	
 	Horse kon = new Horse(0, imie, plec, dataUrodzinFormated, kolorFormated,  matka, ojciec, null);
+}
+
+private static Breeder pobierzHodowceZBazy(String imieHodowcy) {
+	try{
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+		Set<Breeder> dane = new HashSet<Breeder>();
+		String queryStr = "SELECT * FROM BREEDER";
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(queryStr);
+		while(rs.next())	{
+			dane.add(new Breeder(rs.getLong(0), rs.getString(1), pobierzKraj(rs.getInt(3))) );
+		
+		}
+		con.close();
+		
+	}
+	catch (Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
+
+	return null;
+	
 }
 
 private static Horse pobierzKonia(String imieKonia,
@@ -61,7 +86,7 @@ private static Horse pobierzKonia(String imieKonia,
 	Statement stmt = con.createStatement();
 	ResultSet rs = stmt.executeQuery(queryStr);
 	while(rs.next())	{
-		dane.add(new Horse(rs.getLong(0), rs.getString(1), Sex.valueOf(rs.getInt(2)), new DateOfBirth(rs.getDate(4)), new Color(rs.getInt(3)), pobierzKoniaZBazy(rs.getInt(6)), new Horse(rs.getInt(7)),new Breeder(rs.getInt(8)) ));
+		dane.add(new Horse(rs.getLong(0), rs.getString(1), Sex.valueOf(rs.getInt(2)), new DateOfBirth(rs.getDate(4)), new Color(rs.getInt(3)), pobierzKoniaZBazy(rs.getInt(7)), pobierzKoniaZBazy(rs.getInt(6)),pobierzHodowce(rs.getInt(8)) ));
 	
 	}
 	con.close();
@@ -81,20 +106,87 @@ return null;
 	
 }
 
+private static Breeder pobierzHodowce(int int1) {
+	try{
+	Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+	
+	String queryStr = "SELECT * FROM BREEDER WHERE ID="+int1;
+	Statement stmt = con.createStatement();
+	ResultSet rs = stmt.executeQuery(queryStr);
+	if (rs.next())
+	{
+		return new Breeder(int1, rs.getString(1), pobierzKraj(rs.getInt(2)));
+	}
+	else
+	{
+		con.close();
+		return null;
+	}
+	}
+	catch (Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
+	return null;
+}
+
+private static Country pobierzKraj(int int1) {
+	try{
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+		
+		String queryStr = "SELECT * FROM COUNTRY WHERE ID="+int1;
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(queryStr);
+		if (rs.next())
+		{
+			return new Country(int1, rs.getString(1), rs.getString(2));
+		}
+		else
+		{
+			con.close();
+			return null;
+		}
+		}
+		catch (Exception ex)	{
+			System.out.println(ex.getMessage());
+		}
+	return null;
+}
+
 private static Horse pobierzKoniaZBazy(int int1) {
-	// TODO Auto-generated method stub
+	try{
+		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+		
+		String queryStr = "SELECT * FROM HORSE WHERE id="+int1;
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(queryStr);
+		if(rs.next())	{
+			con.close();
+			return new Horse(rs.getLong(0), rs.getString(1), Sex.valueOf(rs.getInt(2)), new DateOfBirth(rs.getDate(4)), new Color(rs.getInt(3)), pobierzKoniaZBazy(rs.getInt(7)), pobierzKoniaZBazy(rs.getInt(6)),pobierzHodowce(rs.getInt(8)) );
+		
+		}
+		else 
+		{
+			con.close();
+			return null;
+		}
+		
+		
+	}
+	catch (Exception ex)	{
+		System.out.println(ex.getMessage());
+	}
 	return null;
 }
 
 private static DateOfBirth pobierzDateUrodzeniaOdUzytkownika() {
-	Date dataUrodzin = null;
+	Date dataUrodzin = new Date(0);
 	System.out.println("Podaj rok urodzenia konia");
 	dataUrodzin.setYear(EasyIn.getInt());
 	System.out.println("Podaj miesiac urodzenia konia");
 	dataUrodzin.setMonth(EasyIn.getInt());
 	System.out.println("Podaj dzien urodzenia konia");
 	dataUrodzin.setDate(EasyIn.getInt());
-	DateOfBirth dataUrodzinFormated = null;
+	DateOfBirth dataUrodzinFormated = new DateOfBirth(null);
 	dataUrodzinFormated.setDate(dataUrodzin, false);
 	return dataUrodzinFormated;
 }
@@ -130,7 +222,7 @@ private static Color pobierzKolorZBazy(String kolor) {
 public static boolean sprawdzCzyKolorJestWBazie(String kolor) {
 	try	{
 		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
-		Set<Color> dane = new HashSet<Color>();
+		List<Color> dane = new ArrayList<Color>();
 		String queryStr = "SELECT * FROM COLOR";
 		Statement stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery(queryStr);
