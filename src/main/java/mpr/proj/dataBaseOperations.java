@@ -669,7 +669,10 @@ private static Set<Horse> pobierzKolekcjeKonizBazy() {
 }
 
 public static void wygenerujRodowodKonia() {
-	// TODO Auto-generated method stub
+	System.out.println("Podaj id konia do rodowodu");
+	int wybor = EasyIn.getInt();
+	System.out.println("Podaj ilość pokoleń w rodowodzie");
+	
 	
 }
 
