@@ -47,7 +47,7 @@ public abstract class insideMenus {
 		System.out.println("Menu");
 		System.out.println("1) Wyświetl konie");
 		System.out.println("2) Wyświetl hodowcow");
-		System.out.println("3) Wyświetl informacje o koniu ");
+		
 		
 		switch(EasyIn.getInt())
 		{
@@ -65,12 +65,7 @@ public abstract class insideMenus {
 			dataBaseOperations.pokazHodowcow();
 			break;	
 		}
-		case 3:
-		{
-			EasyIn.clear();
-			dataBaseOperations.pokazKonia();
-			break;	
-		}
+		
 		
 		
 		default:{
