@@ -1,9 +1,14 @@
 package mpr.proj;
 import java.lang.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.io.IOException;
 import java.io.ObjectInputStream.GetField;
 
 import mpr.proj.*;
+import mpr.proj.pedigree.Sex;
 
 
 
@@ -28,7 +33,7 @@ public class Main {
         switch(EasyIn.getInt())
         {
         case 1: {
-        	insideMenus.dodawanieWpisu();
+             	insideMenus.dodawanieWpisu();
         	
         	break;
         }
