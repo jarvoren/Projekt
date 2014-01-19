@@ -233,7 +233,7 @@ public abstract class KolekcjeIOperacje {
 			
 			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 			
-			String queryStr = "INSERT INTO BEEDER (NAME , COUNTRY) VALUES (?,?)";
+			String queryStr = "INSERT INTO BREEDER (NAME , COUNTRY) VALUES (?,?)";
 			PreparedStatement stmt = con.prepareStatement(queryStr);
 			stmt.setString(1, hodowca.getName());
 	        stmt.setInt(2, hodowca.getCountry().getId());

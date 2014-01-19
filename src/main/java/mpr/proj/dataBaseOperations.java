@@ -11,10 +11,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+
+
+
+
+
 
 import mpr.proj.pedigree.*;
 
@@ -40,9 +47,12 @@ public static void dodajKraj() {
 
 public static void pokazKonie() {
 	Map<Integer,Horse> kolekcja =KolekcjeIOperacje.pobierzKolekcjeKonizBazy();
-		for(Map.Entry<Integer,Horse> entry: kolekcja.entrySet()){
 		
+	
+	for(Map.Entry<Integer,Horse> entry: kolekcja.entrySet()){
+			
 			System.out.println("Id: "+entry.getValue().getID()+" Płeć: "+entry.getValue().getSex().toString()+" Kolor:"+entry.getValue().getColor().getLname()+" Data Urodzin:"+entry.getValue().getDob().getDate().toString()+" Imie Ojca: "+KolekcjeIOperacje.ifHorseNullImie(entry.getValue().getSire())+" Id Ojca: "+KolekcjeIOperacje.ifHorseNullId(entry.getValue().getSire())+" Imie Matki:"+KolekcjeIOperacje.ifHorseNullImie(entry.getValue().getDam())+" Id Matki: "+KolekcjeIOperacje.ifHorseNullId(entry.getValue().getDam())+" Imie hodowcy: "+entry.getValue().getBreeder().getName()+" Id Hodowcy: "+entry.getValue().getBreeder().getId()+" Kraj Pochodzenia: "+entry.getValue().getBreeder().getCountry().getName());	
+			
 		}
 	
 }
@@ -127,7 +137,7 @@ public static void kasujKonia() {
          String queryStr = "DELETE FROM HORSE WHERE ID=(?)";
          PreparedStatement stmt = con.prepareStatement(queryStr);
          stmt.setInt(1, wybor);
-         
+         stmt.executeUpdate();
  }
  catch (Exception ex) {
          System.out.println(ex.getMessage());
@@ -143,7 +153,7 @@ public static void kasujHodowce() {
          String queryStr = "DELETE FROM BREEDER WHERE ID=(?)";
          PreparedStatement stmt = con.prepareStatement(queryStr);
          stmt.setInt(1, wybor);
-         
+         stmt.executeUpdate();
  }
 	 catch (Exception ex) {
          System.out.println(ex.getMessage());
