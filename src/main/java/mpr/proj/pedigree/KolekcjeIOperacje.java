@@ -41,7 +41,7 @@ public abstract class KolekcjeIOperacje {
 	
 	public static Map<Integer ,Breeder> pobierzKolekcjeHodowcowZBazy() {
 		try{
-			Connection con = DriverManager.getConnection("1jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 			Map<Integer ,Breeder> kolekcja = new HashMap<Integer ,Breeder>();
 			String queryStr = "SELECT * FROM BREEDER";
 			Statement stmt = con.createStatement();
@@ -65,7 +65,7 @@ public abstract class KolekcjeIOperacje {
 	}
 	public static Map<Integer ,Horse> pobierzKolekcjeKonizBazy() {
 		try{
-			Connection con = DriverManager.getConnection("1jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 			Map<Integer ,Horse> kolekcja = new HashMap<Integer ,Horse>();
 			String queryStr = "SELECT * FROM HORSE";
 			Statement stmt = con.createStatement();
@@ -189,7 +189,7 @@ public abstract class KolekcjeIOperacje {
 			stmt.setString(1, kon.getName());
 	        stmt.setInt(2, kon.getIntOfSex());
 	        stmt.setInt(3, kon.getColor().getID());
-	        stmt.setString(4, kon.getDob().toString());
+	        stmt.setString(4, kon.getDob().getDate().toString());
 	        stmt.setBoolean(5, false);
 	        stmt.setInt(6, (int) kon.getDam().getID());
 	        stmt.setInt(7, (int) kon.getSire().getID());
@@ -300,16 +300,15 @@ public abstract class KolekcjeIOperacje {
 		
 	}
 	private static DateOfBirth pobierzDateUrodzeniaOdUzytkownika() {
-		Date dataUrodzin = new Date(0);
+		
 		System.out.println("Podaj rok urodzenia konia");
-		dataUrodzin.setYear(EasyIn.getInt());
+		int rok = EasyIn.getInt();
 		System.out.println("Podaj miesiac urodzenia konia");
-		dataUrodzin.setMonth(EasyIn.getInt());
+		int miesiac = EasyIn.getInt();
 		System.out.println("Podaj dzien urodzenia konia");
-		dataUrodzin.setDate(EasyIn.getInt());
-		DateOfBirth dataUrodzinFormated = new DateOfBirth(null);
-		dataUrodzinFormated.setDate(dataUrodzin, false);
-		return dataUrodzinFormated;
+		int dzien = EasyIn.getInt();		
+		return new DateOfBirth(new Date(rok, miesiac, dzien));
+		
 	}
 	public static Breeder pobierzHodowceOdUzytkownika() {
 		System.out.println("Podaj imie hodowcy");
@@ -341,6 +340,16 @@ public abstract class KolekcjeIOperacje {
 	catch (Exception ex) {
 	        System.out.println(ex.getMessage());
 	}
+	}
+
+	public static String ifHorseNullImie(Horse kon) {
+		if(kon==null){return "Brak Rodzica";}
+		else {return kon.getName();}
+	}
+
+	public static int ifHorseNullId(Horse kon) {
+		if(kon==null){return 0;}
+		else {return (int) kon.getID();}
 	}
 
 	

@@ -42,7 +42,7 @@ public static void pokazKonie() {
 	Map<Integer,Horse> kolekcja =KolekcjeIOperacje.pobierzKolekcjeKonizBazy();
 		for(Map.Entry<Integer,Horse> entry: kolekcja.entrySet()){
 		
-			System.out.println("Id: "+entry.getValue().getID()+" Płeć: "+entry.getValue().getSex().toString()+" Kolor:"+entry.getValue().getColor().getLname()+" Data Urodzin:"+entry.getValue().getDob().getDate().toString()+" Imie Ojca: "+entry.getValue().getSire().getName()+" Id Ojca: "+entry.getValue().getSire().getID()+" Imie Matki:"+entry.getValue().getDam().getName()+" Id Matki: "+entry.getValue().getDam().getID()+" Imie hodowcy: "+entry.getValue().getBreeder().getName()+" Id Hodowcy: "+entry.getValue().getBreeder().getId()+" Kraj Pochodzenia: "+entry.getValue().getBreeder().getCountry().getName());	
+			System.out.println("Id: "+entry.getValue().getID()+" Płeć: "+entry.getValue().getSex().toString()+" Kolor:"+entry.getValue().getColor().getLname()+" Data Urodzin:"+entry.getValue().getDob().getDate().toString()+" Imie Ojca: "+KolekcjeIOperacje.ifHorseNullImie(entry.getValue().getSire())+" Id Ojca: "+KolekcjeIOperacje.ifHorseNullId(entry.getValue().getSire())+" Imie Matki:"+KolekcjeIOperacje.ifHorseNullImie(entry.getValue().getDam())+" Id Matki: "+KolekcjeIOperacje.ifHorseNullId(entry.getValue().getDam())+" Imie hodowcy: "+entry.getValue().getBreeder().getName()+" Id Hodowcy: "+entry.getValue().getBreeder().getId()+" Kraj Pochodzenia: "+entry.getValue().getBreeder().getCountry().getName());	
 		}
 	
 }

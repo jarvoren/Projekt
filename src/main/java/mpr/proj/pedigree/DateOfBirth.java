@@ -14,12 +14,10 @@ public class DateOfBirth {
         this.date = date;
         this.yearOnly = yearOnly;
     }
-    public String getDate() {
-        if (yearOnly) {
-        	Integer rok = date.getYear();
-            return rok.toString();
-        } else {
-            return date.toString();
+    public Date getDate() {
+        
+            return this.date;
         }
-    }
+    
 }
+
