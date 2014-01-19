@@ -332,8 +332,8 @@ public abstract class KolekcjeIOperacje {
 	        String queryStr = "UPDATE BREEDER SET NAME=(?), COUNTRY=(?) WHERE ID=(?)";
 	        PreparedStatement stmt = con.prepareStatement(queryStr);
 	        stmt.setString(1, hodowca.getName());
-	        stmt.setString(2, hodowca.getCountry().getName());
-	        stmt.setInt(3, wybor);
+	        stmt.setInt(2, hodowca.getCountry().getId());
+	        stmt.setLong(3, (long)wybor);
 	        stmt.executeUpdate(); 
 	        
 	}
