@@ -9,7 +9,7 @@ public abstract class insideMenus {
 		System.out.println("1) Dopisz konia");
 		System.out.println("2) Dopisz Hodowce");
 		System.out.println("3) Dopisz Kraj");
-		
+		System.out.println("4) Dopisz Kolor");
 		switch(EasyIn.getInt())
 		{
 			
@@ -33,6 +33,12 @@ public abstract class insideMenus {
 			dataBaseOperations.dodajKraj();
 			break;
 		}
+		case 4:
+		{
+			EasyIn.clear();
+			dataBaseOperations.dodajKolor();
+			break;
+		}
 		
 		default:{
 			EasyIn.clear();
@@ -47,6 +53,8 @@ public abstract class insideMenus {
 		System.out.println("Menu");
 		System.out.println("1) Wyświetl konie");
 		System.out.println("2) Wyświetl hodowcow");
+		System.out.println("3) Wyświetl Kraje");
+		System.out.println("4) Wyświetl Kolory");
 		
 		
 		switch(EasyIn.getInt())
@@ -63,6 +71,18 @@ public abstract class insideMenus {
 		{
 			EasyIn.clear();
 			dataBaseOperations.pokazHodowcow();
+			break;	
+		}
+		case 3:
+		{
+			EasyIn.clear();
+			dataBaseOperations.pokazKraje();
+			break;	
+		}
+		case 4:
+		{
+			EasyIn.clear();
+			dataBaseOperations.pokazKolory();
 			break;	
 		}
 		
@@ -116,6 +136,7 @@ public abstract class insideMenus {
 		System.out.println("Menu");
 		System.out.println("1)Skasuj wpis konia");
 		System.out.println("2)Skasuj wpis hodowcy");
+		System.out.println("3)Skasuj wpis Koloru");
 		
 		switch(EasyIn.getInt())
 		{
@@ -131,6 +152,12 @@ public abstract class insideMenus {
 		{
 			EasyIn.clear();
 			dataBaseOperations.kasujHodowce();
+			break;	
+		}
+		case 3:
+		{
+			EasyIn.clear();
+			dataBaseOperations.kasujKolor();
 			break;	
 		}
 		

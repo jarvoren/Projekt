@@ -160,5 +160,29 @@ public static void kasujHodowce() {
  }   
 }
 
+
+public static void dodajKolor() {
+	System.out.println("Podaj nazwę koloru do dopisania");
+	String nazwa = EasyIn.getString();
+	System.out.println("Podaj skróconą nazwę koloru do dopisania");
+	String sNazwa = EasyIn.getString();
+	KolekcjeIOperacje.dopiszKolor(new Color(0, nazwa, sNazwa));
+	
+}
+public static void kasujKolor() {
+	System.out.println("Podaj id koloru do skasowania");
+	int wybor = EasyIn.getInt();
+	 try        {
+         Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+         String queryStr = "DELETE FROM COLOR WHERE ID=(?)";
+         PreparedStatement stmt = con.prepareStatement(queryStr);
+         stmt.setInt(1, wybor);
+         stmt.executeUpdate();
+ }
+	 catch (Exception ex) {
+         System.out.println(ex.getMessage());
+ }   
+}
+
 	
 }

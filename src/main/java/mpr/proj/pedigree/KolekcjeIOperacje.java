@@ -352,5 +352,29 @@ public abstract class KolekcjeIOperacje {
 		else {return (int) kon.getID();}
 	}
 
+	public static void dopiszKolor(Color color) {
+		try{
+			
+			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+			
+			String queryStr = "INSERT INTO COLOR (LNAME , SNAME) VALUES (?,?)";
+			PreparedStatement stmt = con.prepareStatement(queryStr);
+			stmt.setString(1, color.getLname());
+	        stmt.setString(2, color.getSname());
+	        	
+			stmt.executeUpdate();
+				
+			con.close();
+			}
+			
+			
+			
+
+		catch (Exception ex)	{
+			System.out.println(ex.getMessage());
+		}
+		
+	}
+
 	
 }
