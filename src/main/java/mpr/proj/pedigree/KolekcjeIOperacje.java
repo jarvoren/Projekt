@@ -450,5 +450,25 @@ public abstract class KolekcjeIOperacje {
 		
 	}
 
+	public static void modyfikujWpisKoloru(int wybor,
+			Color kolor) {
+
+		try        {
+	        Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+	        String queryStr = "UPDATE COLOR SET LNAME=(?), SNAME=(?) WHERE ID=(?)";
+	        PreparedStatement stmt = con.prepareStatement(queryStr);
+	        stmt.setString(1, kolor.getLname());
+	        stmt.setString(2, kolor.getSname());
+	        stmt.setLong(3, (long)wybor);
+	        stmt.executeUpdate(); 
+	        
+	}
+	catch (Exception ex) {
+	        System.out.println(ex.getMessage());
+	}
+		
+		
+	}
+
 	
 }

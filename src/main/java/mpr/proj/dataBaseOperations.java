@@ -230,5 +230,13 @@ public static void modyfikujKraj() {
 }
 
 
+public static void modyfikujKolor() {
+	System.out.println("Podaj numer wpisu do edycji");
+	KolekcjeIOperacje.modyfikujWpisKoloru(EasyIn.getInt(),KolekcjeIOperacje.pobierzKolorOdUzytkownika());
+
+	
+}
+
+
 	
 }
