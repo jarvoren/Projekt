@@ -103,6 +103,8 @@ public abstract class insideMenus {
 		System.out.println("Menu");
 		System.out.println("1) Modyfikuj wpis konia");
 		System.out.println("2) Modyfikuj wpis hodowcy");
+		System.out.println("3) Modyfikuj Kraje");
+		System.out.println("4) Modyfikuj Kolory");
 		
 		switch(EasyIn.getInt())
 		{
@@ -118,6 +120,19 @@ public abstract class insideMenus {
 		{
 			EasyIn.clear();
 			dataBaseOperations.modyfikujHodowce();
+			break;	
+		}
+		case 3:
+		{
+			EasyIn.clear();
+			dataBaseOperations.modyfikujKraj();
+			break;
+		}
+		
+		case 4:
+		{
+			EasyIn.clear();
+			dataBaseOperations.modyfikujKolor();
 			break;	
 		}
 		
@@ -137,6 +152,7 @@ public abstract class insideMenus {
 		System.out.println("1)Skasuj wpis konia");
 		System.out.println("2)Skasuj wpis hodowcy");
 		System.out.println("3)Skasuj wpis Koloru");
+		System.out.println("3)Skasuj wpis Kraju");
 		
 		switch(EasyIn.getInt())
 		{
@@ -158,6 +174,12 @@ public abstract class insideMenus {
 		{
 			EasyIn.clear();
 			dataBaseOperations.kasujKolor();
+			break;	
+		}
+		case 4:
+		{
+			EasyIn.clear();
+			dataBaseOperations.kasujKraj();
 			break;	
 		}
 		

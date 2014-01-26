@@ -376,5 +376,79 @@ public abstract class KolekcjeIOperacje {
 		
 	}
 
+	public static List<Country> pobierzKolekcjeKrajowZBazy() {
+		try{
+			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+			List<Country> kolekcja = new ArrayList<Country>();
+			String queryStr = "SELECT * FROM COUNTRY";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(queryStr);
+			while(rs.next())	{
+				kolekcja.add(new Country(rs.getInt(1), rs.getString(2), rs.getString(3)));
+			
+			}
+			con.close();
+			return kolekcja;
+			
+			
+			
+			
+		}
+		catch(Exception ex)	{
+				System.out.println(ex.getMessage());
+				return null;
+			}
+	}
+
+	public static List<Color> pobierzKolekcjeKolorowZBazy() {
+		try{
+			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+			List<Color> kolekcja = new ArrayList<Color>();
+			String queryStr = "SELECT * FROM COLOR";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(queryStr);
+			while(rs.next())	{
+				kolekcja.add(new Color(rs.getInt(1), rs.getString(2), rs.getString(3)));
+			
+			}
+			con.close();
+			return kolekcja;
+			
+			
+			
+			
+		}
+		catch(Exception ex)	{
+				System.out.println(ex.getMessage());
+				return null;
+			}
+	}
+
+	public static Color pobierzKolorOdUzytkownika() {
+		System.out.println("Podaj nazwę koloru do dopisania");
+		String nazwa = EasyIn.getString();
+		System.out.println("Podaj skróconą nazwę koloru do dopisania");
+		String sNazwa = EasyIn.getString();
+		return new Color(0, nazwa, sNazwa);
+	}
+
+	public static void modyfikujWpisKraju(int wybor,
+			Country kraj) {
+		try        {
+	        Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+	        String queryStr = "UPDATE COUNTRY SET NAME=(?), CODE=(?) WHERE ID=(?)";
+	        PreparedStatement stmt = con.prepareStatement(queryStr);
+	        stmt.setString(1, kraj.getName());
+	        stmt.setString(2, kraj.getCode());
+	        stmt.setLong(3, (long)wybor);
+	        stmt.executeUpdate(); 
+	        
+	}
+	catch (Exception ex) {
+	        System.out.println(ex.getMessage());
+	}
+		
+	}
+
 	
 }

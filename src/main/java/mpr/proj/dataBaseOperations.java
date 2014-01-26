@@ -162,11 +162,7 @@ public static void kasujHodowce() {
 
 
 public static void dodajKolor() {
-	System.out.println("Podaj nazwę koloru do dopisania");
-	String nazwa = EasyIn.getString();
-	System.out.println("Podaj skróconą nazwę koloru do dopisania");
-	String sNazwa = EasyIn.getString();
-	KolekcjeIOperacje.dopiszKolor(new Color(0, nazwa, sNazwa));
+	KolekcjeIOperacje.dopiszKolor(KolekcjeIOperacje.pobierzKolorOdUzytkownika());
 	
 }
 public static void kasujKolor() {
@@ -183,6 +179,56 @@ public static void kasujKolor() {
          System.out.println(ex.getMessage());
  }   
 }
+
+
+public static void pokazKraje() {
+List<Country> kolekcja =KolekcjeIOperacje.pobierzKolekcjeKrajowZBazy();
+	
+	for(Country entry: kolekcja){
+		
+		System.out.println("Id: "+entry.getId()+" Nazwa:"+entry.getName()+"Nazwa Kodowa: "+entry.getCode());
+	}
+	
+}
+
+
+public static void kasujKraj() {
+	System.out.println("Podaj id kraju do skasowania");
+	int wybor = EasyIn.getInt();
+	 try        {
+         Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+         String queryStr = "DELETE FROM COUNTRY WHERE ID=(?)";
+         PreparedStatement stmt = con.prepareStatement(queryStr);
+         stmt.setInt(1, wybor);
+         stmt.executeUpdate();
+ }
+	 catch (Exception ex) {
+         System.out.println(ex.getMessage());
+ }   
+	
+}
+
+
+public static void pokazKolory() {
+List<Color> kolekcja =KolekcjeIOperacje.pobierzKolekcjeKolorowZBazy();
+	
+	for(Color entry: kolekcja){
+		
+		System.out.println("Id: "+entry.getID()+" Nazwa:"+entry.getLname()+"Nazwa skrocona: "+entry.getSname());
+	}
+	
+}
+
+
+public static void modyfikujKraj() {
+	System.out.println("Podaj numer wpisu do edycji");
+	KolekcjeIOperacje.modyfikujWpisKraju(EasyIn.getInt(),KolekcjeIOperacje.pobierzKrajOdUzytkownika());
+
+	
+	
+	
+}
+
 
 	
 }
