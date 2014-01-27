@@ -51,7 +51,7 @@ public static void pokazKonie() {
 	
 	for(Map.Entry<Integer,Horse> entry: kolekcja.entrySet()){
 			
-			System.out.println("Id: "+entry.getValue().getID()+" Płeć: "+entry.getValue().getSex().toString()+" Kolor:"+entry.getValue().getColor().getLname()+" Data Urodzin:"+entry.getValue().getDob().getDate().toString()+" Imie Ojca: "+KolekcjeIOperacje.ifHorseNullImie(entry.getValue().getSire())+" Id Ojca: "+KolekcjeIOperacje.ifHorseNullId(entry.getValue().getSire())+" Imie Matki:"+KolekcjeIOperacje.ifHorseNullImie(entry.getValue().getDam())+" Id Matki: "+KolekcjeIOperacje.ifHorseNullId(entry.getValue().getDam())+" Imie hodowcy: "+entry.getValue().getBreeder().getName()+" Id Hodowcy: "+entry.getValue().getBreeder().getId()+" Kraj Pochodzenia: "+entry.getValue().getBreeder().getCountry().getName());	
+			System.out.println("Id: "+entry.getValue().getID()+" Imie:"+entry.getValue().getName()+" Płeć: "+entry.getValue().getSex().toString()+" Kolor:"+entry.getValue().getColor().getLname()+" Data Urodzin:"+entry.getValue().getDob().getDate().toString()+" Imie Ojca: "+KolekcjeIOperacje.ifHorseNullImie(entry.getValue().getSire())+" Id Ojca: "+KolekcjeIOperacje.ifHorseNullId(entry.getValue().getSire())+" Imie Matki:"+KolekcjeIOperacje.ifHorseNullImie(entry.getValue().getDam())+" Id Matki: "+KolekcjeIOperacje.ifHorseNullId(entry.getValue().getDam())+" Imie hodowcy: "+entry.getValue().getBreeder().getName()+" Id Hodowcy: "+entry.getValue().getBreeder().getId()+" Kraj Pochodzenia: "+entry.getValue().getBreeder().getCountry().getName());	
 			
 		}
 	
@@ -62,7 +62,7 @@ public static void pokazHodowcow() {
 	
 	for(Map.Entry<Integer,Breeder> entry: kolekcja.entrySet()){
 		
-		System.out.println("Id Hodowcy: "+entry.getValue().getId()+" Imie Hodowcy:"+ entry.getValue().getName()+" Kraj pochodzenia: ");
+		System.out.println("Id Hodowcy: "+entry.getValue().getId()+" Imie Hodowcy:"+ entry.getValue().getName()+" Kraj pochodzenia: "+entry.getValue().getCountry().getName());
 	}
 		
 
@@ -214,7 +214,7 @@ List<Color> kolekcja =KolekcjeIOperacje.pobierzKolekcjeKolorowZBazy();
 	
 	for(Color entry: kolekcja){
 		
-		System.out.println("Id: "+entry.getID()+" Nazwa:"+entry.getLname()+"Nazwa skrocona: "+entry.getSname());
+		System.out.println("Id: "+entry.getID()+" Nazwa:"+entry.getLname()+" Nazwa skrocona: "+entry.getSname());
 	}
 	
 }

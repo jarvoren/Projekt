@@ -26,10 +26,10 @@ public abstract class KolekcjeIOperacje {
 	        stmt.setInt(2, kon.getIntOfSex() );
 	        stmt.setInt(3, kon.getColor().getID());
 	        stmt.setString(4, kon.getDob().getDate().toString());
-	        stmt.setInt(6, (int) kon.getDam().getID());
-	        stmt.setInt(7,(int) kon.getSire().getID());
-	        stmt.setInt(8, (int) kon.getBreeder().getId());
-	        stmt.setInt(9,(int) idDoZmiany);
+	        stmt.setInt(5, (int) KolekcjeIOperacje.ifHorseNullId(kon.getDam()));
+	        stmt.setInt(6,(int) KolekcjeIOperacje.ifHorseNullId(kon.getSire()));
+	        stmt.setInt(7, (int) kon.getBreeder().getId());
+	        stmt.setInt(8,(int) idDoZmiany);
 	        stmt.executeUpdate(); 
 	        
 	}
@@ -191,8 +191,8 @@ public abstract class KolekcjeIOperacje {
 	        stmt.setInt(3, kon.getColor().getID());
 	        stmt.setString(4, kon.getDob().getDate().toString());
 	        stmt.setBoolean(5, false);
-	        stmt.setInt(6, (int) kon.getDam().getID());
-	        stmt.setInt(7, (int) kon.getSire().getID());
+	        stmt.setInt(6, (int) KolekcjeIOperacje.ifHorseNullId(kon.getDam()));
+	        stmt.setInt(7, (int) KolekcjeIOperacje.ifHorseNullId(kon.getSire()));
 	        stmt.setInt(8, (int) kon.getBreeder().getId());
 			
 			stmt.executeUpdate();
@@ -286,12 +286,12 @@ public abstract class KolekcjeIOperacje {
 		DateOfBirth dataUrodzinFormated = pobierzDateUrodzeniaOdUzytkownika();
 		System.out.println("Podaj id koloru konia");
 		int kolorId = EasyIn.getInt();
-		System.out.println("Podaj id");
+		System.out.println("Podaj id ojca");
 		int idOjca = EasyIn.getInt();
-		Horse ojciec = KolekcjeIOperacje.pobierzKonia(idOjca);
+		Horse ojciec = KolekcjeIOperacje.sprawdzenieOjcostwa(dataUrodzinFormated , KolekcjeIOperacje.pobierzKonia(idOjca));
 		System.out.println("Podaj id matki");
 		int idMatki = EasyIn.getInt();
-		Horse matka = KolekcjeIOperacje.pobierzKonia(idMatki);
+		Horse matka = KolekcjeIOperacje.sprawdzenieMatczynstwa(dataUrodzinFormated ,KolekcjeIOperacje.pobierzKonia(idMatki));
 		System.out.println("Podaj id hodowcy");
 		int id = EasyIn.getInt();
 		Breeder hodowca = KolekcjeIOperacje.pobierzHodowce(id);
