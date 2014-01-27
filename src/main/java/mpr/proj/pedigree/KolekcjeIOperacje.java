@@ -299,6 +299,36 @@ public abstract class KolekcjeIOperacje {
 		
 		
 	}
+	private static Horse sprawdzenieMatczynstwa(
+			DateOfBirth dataUrodzin, Horse kon) {
+		if(kon.getSex()==Sex.MARE)
+		{
+			Date tempDate = kon.getDob().getDate();
+			tempDate.setYear(tempDate.getYear()-3);
+			if(dataUrodzin.getDate().compareTo(tempDate)<0){
+				Date tempDate2 = kon.getDob().getDate();
+				tempDate2.setYear(tempDate.getYear()+30);
+				if(dataUrodzin.getDate().compareTo(tempDate)<0){
+				return kon;
+				}
+			}
+		}
+		return null;
+	}
+
+	private static Horse sprawdzenieOjcostwa(DateOfBirth dataUrodzin,
+			Horse kon) {
+		if(kon.getSex()==Sex.STALLION)
+		{
+			Date tempDate = kon.getDob().getDate();
+			tempDate.setYear(tempDate.getYear()-2);
+			if(dataUrodzin.getDate().compareTo(tempDate)<0){
+				return kon;
+			}
+		}
+		return null;
+	}
+
 	private static DateOfBirth pobierzDateUrodzeniaOdUzytkownika() {
 		
 		System.out.println("Podaj rok urodzenia konia");
