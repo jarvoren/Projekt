@@ -102,6 +102,90 @@ public class TestyOperacjiSql {
 		}
 		
 		}
+	@Test
+	public void testTabeliKraju(){
+		
+		Random gen = new Random();
+		String test1 = ""+gen.nextInt(5000);
+		String test3 = ""+gen.nextInt(5000);
+		
+		
+		
+		
+		Country krajTestowy = new Country(0, test1, "BZ");
+		KolekcjeIOperacje.dopiszKraj(krajTestowy);		
+		
+		
+		
+		try{
+			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+			String queryStr = "SELECT * FROM COUNTRY WHERE NAME='"+test1+"'";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(queryStr);
+			
+			assertEquals(true,rs.next());
+			assertEquals(rs.getString(2),test1);
+			
+			krajTestowy.setName(test3);
+			
+			KolekcjeIOperacje.modyfikujWpisKraju(rs.getInt(1), krajTestowy );
+			assertEquals(test3,KolekcjeIOperacje.pobierzKraj(rs.getInt(1)).getName());
+			
+			
+			dataBaseOperations.kasujKraj(rs.getInt(1));
+			assertEquals(null ,KolekcjeIOperacje.pobierzKraj(rs.getInt(1)));
+			
+			con.close();
+			
+		}
+		catch(Exception ex)	{
+			System.out.println(ex.getMessage());
+		}
+		
+		}
+	
+	@Test
+	public void testTabeliKoloru(){
+		
+		Random gen = new Random();
+		String test1 = ""+gen.nextInt(5000);
+		String test3 = ""+gen.nextInt(5000);
+		
+		
+		
+		
+		Color kolorTestowy = new Color(0, test1, test3);
+		KolekcjeIOperacje.dopiszKolor(kolorTestowy);		
+		
+		
+		
+		try{
+			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+			String queryStr = "SELECT * FROM COLOR WHERE LNAME='"+test1+"'";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(queryStr);
+			
+			assertEquals(true,rs.next());
+			assertEquals(rs.getString(2),test1);
+			
+			kolorTestowy.setLname(test3);
+			
+			KolekcjeIOperacje.modyfikujWpisKoloru(rs.getInt(1), kolorTestowy );
+			assertEquals(test3,KolekcjeIOperacje.pobierzKolor(rs.getInt(1)).getLname());
+			
+			
+			dataBaseOperations.kasujKolor(rs.getInt(1));
+			assertEquals(null ,KolekcjeIOperacje.pobierzKolor(rs.getInt(1)));
+			
+			con.close();
+			
+		}
+		catch(Exception ex)	{
+			System.out.println(ex.getMessage());
+		}
+		
+		}
+	
 		
 	}
 
