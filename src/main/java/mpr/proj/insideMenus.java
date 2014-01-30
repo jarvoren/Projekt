@@ -160,26 +160,30 @@ public abstract class insideMenus {
 		case 1:
 		{
 			EasyIn.clear();
-			dataBaseOperations.kasujKonia();
+			System.out.println("Podaj id konia do skasowania");
+			dataBaseOperations.kasujKonia(EasyIn.getInt());
 			break;
 		}
 		
 		case 2:
 		{
 			EasyIn.clear();
-			dataBaseOperations.kasujHodowce();
+			System.out.println("Podaj id Hodowcy do skasowania");
+			dataBaseOperations.kasujHodowce(EasyIn.getInt());
 			break;	
 		}
 		case 3:
 		{
 			EasyIn.clear();
-			dataBaseOperations.kasujKolor();
+			System.out.println("Podaj id koloru do skasowania");
+			dataBaseOperations.kasujKolor(EasyIn.getInt());
 			break;	
 		}
 		case 4:
 		{
 			EasyIn.clear();
-			dataBaseOperations.kasujKraj();
+			System.out.println("Podaj id kraju do skasowania");
+			dataBaseOperations.kasujKraj(EasyIn.getInt());
 			break;	
 		}
 		

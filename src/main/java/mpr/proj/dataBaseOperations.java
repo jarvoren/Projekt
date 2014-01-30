@@ -10,12 +10,14 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 
 
 
@@ -90,31 +92,21 @@ public static void modyfikujHodowce() {
 
 
 public static void wyszukajPotomstwoKonia() {
-	System.out.println("Podaj głębokość wyszukiwania");
-	int glebokosc = EasyIn.getInt();
 	System.out.println("Podaj id konia którego potomkow szukamy");
 	int wybor = EasyIn.getInt();
 	System.out.println("Potomkowie konia "+ KolekcjeIOperacje.pobierzKonia(wybor).getName());
-	wyszukajPotomstwo(glebokosc , wybor);
+	wyszukajPotomstwo(KolekcjeIOperacje.pobierzKolekcjeKonizBazy(),KolekcjeIOperacje.pobierzKonia(wybor) );
 	
 }
 
-private static void wyszukajPotomstwo(int glebokosc, int wybor) {
-	glebokosc--;
-	Map<Integer ,Horse> kolekcja = KolekcjeIOperacje.pobierzKolekcjeKonizBazy();
+private static void wyszukajPotomstwo(Map<Integer ,Horse> kolekcja ,Horse kon) {
+	
 	for(Map.Entry<Integer,Horse> entry: kolekcja.entrySet())
 	{
-		if(wybor==entry.getValue().getDam().getID())
+		if(entry.getValue().getSire().getID()==kon.getID() || entry.getValue().getDam().getID()==kon.getID())
 		{
-			System.out.println(entry.getValue().getName());
-			if(glebokosc!=0){wyszukajPotomstwo(glebokosc, (int) entry.getValue().getID());}
+		System.out.println(" Imie: "+entry.getValue().getName()+" ID"+entry.getValue().getID());
 		}
-		if(wybor==entry.getValue().getSire().getID())
-		{
-			System.out.println(entry.getValue().getName());
-			if(glebokosc!=0){wyszukajPotomstwo(glebokosc, (int) entry.getValue().getID());}
-		}
-		
 		
 	}
 	
@@ -125,13 +117,14 @@ public static void wygenerujRodowodKonia() {
 	System.out.println("Podaj id konia do rodowodu");
 	int wybor = EasyIn.getInt();
 	System.out.println("Podaj ilość pokoleń w rodowodzie");
+	int glebokosc = EasyIn.getInt();
+	EksportDoPdf.exportPDF(KolekcjeIOperacje.pobierzKonia(wybor), glebokosc);
 	
 	
 }
 
-public static void kasujKonia() {
-	System.out.println("Podaj id konia do skasowania");
-	int wybor = EasyIn.getInt();
+public static void kasujKonia(int wybor) {
+	
 	 try        {
          Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
          String queryStr = "DELETE FROM HORSE WHERE ID=(?)";
@@ -145,9 +138,8 @@ public static void kasujKonia() {
 	
 }
 
-public static void kasujHodowce() {
-	System.out.println("Podaj id Hodowcy do skasowania");
-	int wybor = EasyIn.getInt();
+public static void kasujHodowce(int wybor) {
+	
 	 try        {
          Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
          String queryStr = "DELETE FROM BREEDER WHERE ID=(?)";
@@ -165,9 +157,8 @@ public static void dodajKolor() {
 	KolekcjeIOperacje.dopiszKolor(KolekcjeIOperacje.pobierzKolorOdUzytkownika());
 	
 }
-public static void kasujKolor() {
-	System.out.println("Podaj id koloru do skasowania");
-	int wybor = EasyIn.getInt();
+public static void kasujKolor(int wybor) {
+	
 	 try        {
          Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
          String queryStr = "DELETE FROM COLOR WHERE ID=(?)";
@@ -192,9 +183,8 @@ List<Country> kolekcja =KolekcjeIOperacje.pobierzKolekcjeKrajowZBazy();
 }
 
 
-public static void kasujKraj() {
-	System.out.println("Podaj id kraju do skasowania");
-	int wybor = EasyIn.getInt();
+public static void kasujKraj(int wybor) {
+	
 	 try        {
          Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
          String queryStr = "DELETE FROM COUNTRY WHERE ID=(?)";

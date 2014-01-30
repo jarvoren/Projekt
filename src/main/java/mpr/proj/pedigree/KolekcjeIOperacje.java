@@ -307,7 +307,7 @@ public abstract class KolekcjeIOperacje {
 			tempDate.setYear(tempDate.getYear()-3);
 			if(dataUrodzin.getDate().compareTo(tempDate)<0){
 				Date tempDate2 = kon.getDob().getDate();
-				tempDate2.setYear(tempDate.getYear()+30);
+				tempDate2.setYear(tempDate2.getYear()+30);
 				if(dataUrodzin.getDate().compareTo(tempDate)<0){
 				return kon;
 				}
@@ -323,7 +323,11 @@ public abstract class KolekcjeIOperacje {
 			Date tempDate = kon.getDob().getDate();
 			tempDate.setYear(tempDate.getYear()-2);
 			if(dataUrodzin.getDate().compareTo(tempDate)<0){
+				Date tempDate2 = kon.getDob().getDate();
+				tempDate2.setYear(tempDate2.getYear()+30);
+				if(dataUrodzin.getDate().compareTo(tempDate)<0){
 				return kon;
+				}
 			}
 		}
 		return null;

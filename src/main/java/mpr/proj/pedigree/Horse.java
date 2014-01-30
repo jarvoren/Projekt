@@ -21,8 +21,11 @@ public class Horse {
         this.dam = dam;
         this.breeder = breeder;
     }
-
-    public void setName(String name) {
+    
+    public Horse() {
+		
+	}
+	public void setName(String name) {
         this.name = name;
 }
 
