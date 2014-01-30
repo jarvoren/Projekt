@@ -381,8 +381,9 @@ public abstract class KolekcjeIOperacje {
 		else {return kon.getName();}
 	}
 
-	public static int ifHorseNullId(Horse kon) {
-		if(kon==null){return 0;}
+	public static Integer ifHorseNullId(Horse kon) {
+		Integer i = null ;
+		if(kon==null){return i;}
 		else {return (int) kon.getID();}
 	}
 
