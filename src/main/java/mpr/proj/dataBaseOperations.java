@@ -44,12 +44,13 @@ public static void pokazKonie() {
 		
 	
 	for(Map.Entry<Integer,Horse> entry: kolekcja.entrySet()){
-			
+			if (entry.getValue() != null){
 			System.out.println("Id: "+entry.getValue().getID()+" Imie:"+entry.getValue().getName()+" Płeć: "+entry.getValue().getSex().toString()+" Kolor:"+entry.getValue().getColor().getLname()+" Data Urodzin:"+entry.getValue().getDob().getDate().toString()+" Imie Ojca: "+KolekcjeIOperacje.ifHorseNullImie(entry.getValue().getSire())+" Id Ojca: "+KolekcjeIOperacje.ifHorseNullId(entry.getValue().getSire())+" Imie Matki:"+KolekcjeIOperacje.ifHorseNullImie(entry.getValue().getDam())+" Id Matki: "+KolekcjeIOperacje.ifHorseNullId(entry.getValue().getDam())+" Imie hodowcy: "+entry.getValue().getBreeder().getName()+" Id Hodowcy: "+entry.getValue().getBreeder().getId()+" Kraj Pochodzenia: "+entry.getValue().getBreeder().getCountry().getName());	
-			
+			}
 		}
 	
 }
+
 
 public static void pokazHodowcow() {
 	Map<Integer,Breeder> kolekcja =KolekcjeIOperacje.pobierzKolekcjeHodowcowZBazy();
@@ -95,7 +96,7 @@ private static void wyszukajPotomstwo(Map<Integer ,Horse> kolekcja ,Horse kon) {
 	
 	for(Map.Entry<Integer,Horse> entry: kolekcja.entrySet())
 	{
-		if(entry.getValue().getSire().getID()==kon.getID() || entry.getValue().getDam().getID()==kon.getID())
+		if(KolekcjeIOperacje.ifHorseNullId(entry.getValue().getSire())==kon.getID() || KolekcjeIOperacje.ifHorseNullId(entry.getValue().getDam())==kon.getID())
 		{
 		System.out.println(" Imie: "+entry.getValue().getName()+" ID"+entry.getValue().getID());
 		}

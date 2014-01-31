@@ -191,12 +191,29 @@ public class KolekcjeIOperacje {
 	        stmt.setInt(3, kon.getColor().getID());
 	        stmt.setString(4, kon.getDob().getDate().toString());
 	        stmt.setBoolean(5, false);
-	        stmt.setInt(6, (int) KolekcjeIOperacje.ifHorseNullId(kon.getDam()));
-	        stmt.setInt(7, (int) KolekcjeIOperacje.ifHorseNullId(kon.getSire()));
+	        if(kon.getDam()==null)
+	        	{
+	        	stmt.setNull(6, KolekcjeIOperacje.ifHorseNullId(kon.getDam()) );
+	        	}
+	        else
+	        {
+	        	stmt.setInt(6,KolekcjeIOperacje.ifHorseNullId(kon.getDam()) );
+	        }
+	        	
+	        if(kon.getSire()==null)
+        	{
+        	stmt.setNull(7,KolekcjeIOperacje.ifHorseNullId(kon.getSire()) );
+        	}
+        else
+        {
+        	stmt.setInt(7,KolekcjeIOperacje.ifHorseNullId(kon.getSire()) );
+        }
 	        stmt.setInt(8, (int) kon.getBreeder().getId());
 			
 			stmt.executeUpdate();
-			
+			if(kon.getSire()==null || kon.getDam()==null){
+			System.out.println("Błąd przy zapise rodzicow (nadano zle dane rodzicow)");
+			}
 			
 			con.close();
 			}
@@ -382,8 +399,8 @@ public class KolekcjeIOperacje {
 	}
 
 	public static Integer ifHorseNullId(Horse kon) {
-		Integer i = null ;
-		if(kon==null){return i;}
+		
+		if(kon==null){return 0;}
 		else {return (int) kon.getID();}
 	}
 

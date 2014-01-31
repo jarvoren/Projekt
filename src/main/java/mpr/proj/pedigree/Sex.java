@@ -6,9 +6,9 @@ public enum Sex {
 	public static Sex valueOf(int int1) {
 		switch (int1)
 		{
-		case 1:{return Sex.MARE;}
-		case 2:{return Sex.STALLION; }
-		case 3:{return Sex.GELDING;}
+		case 0:{return Sex.MARE;}
+		case 1:{return Sex.STALLION; }
+		case 2:{return Sex.GELDING;}
 		}
 		return null;
 	}
