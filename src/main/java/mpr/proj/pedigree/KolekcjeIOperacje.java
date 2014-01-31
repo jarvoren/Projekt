@@ -15,7 +15,7 @@ import java.util.Set;
 
 import mpr.proj.EasyIn;
 
-public abstract class KolekcjeIOperacje {
+public class KolekcjeIOperacje {
 	
 	public static void modyfikujWpisKonia(int idDoZmiany, Horse kon) {
 		try        {

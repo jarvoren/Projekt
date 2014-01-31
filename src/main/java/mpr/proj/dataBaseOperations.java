@@ -19,7 +19,7 @@ import java.util.Map;
 
 import mpr.proj.pedigree.*;
 
-public abstract class dataBaseOperations {
+public class dataBaseOperations {
 
 public static void dodajKonia() {
 	
@@ -110,7 +110,7 @@ public static void wygenerujRodowodKonia() {
 	int wybor = EasyIn.getInt();
 	System.out.println("Podaj ilość pokoleń w rodowodzie");
 	int glebokosc = EasyIn.getInt();
-	EksportDoPdf.exportPDF(KolekcjeIOperacje.pobierzKonia(wybor), glebokosc);
+	Export.exportPDF(KolekcjeIOperacje.pobierzKonia(wybor), glebokosc);
 	
 	
 }
