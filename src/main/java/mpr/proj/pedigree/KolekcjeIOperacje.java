@@ -14,12 +14,15 @@ import java.util.Map;
 import java.util.Set;
 
 import mpr.proj.EasyIn;
+import mpr.proj.dataBaseOperations;
 
 public class KolekcjeIOperacje {
 	
+	private static Connection con = dataBaseOperations.getConnection();
+	
 	public static void modyfikujWpisKonia(int idDoZmiany, Horse kon) {
 		try        {
-	        Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+
 	        String queryStr = "UPDATE HORSE SET NAME=(?), SEX=(?), COLOR=(?), DOB=(?), DAM=(?), SIRE=(?), BREEDER=(?) WHERE ID=(?)";
 	        PreparedStatement stmt = con.prepareStatement(queryStr);
 	        stmt.setString(1, kon.getName());
@@ -41,7 +44,7 @@ public class KolekcjeIOperacje {
 	
 	public static Map<Integer ,Breeder> pobierzKolekcjeHodowcowZBazy() {
 		try{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+
 			Map<Integer ,Breeder> kolekcja = new HashMap<Integer ,Breeder>();
 			String queryStr = "SELECT * FROM BREEDER";
 			Statement stmt = con.createStatement();
@@ -51,7 +54,6 @@ public class KolekcjeIOperacje {
 				kolekcja.put((int) rs.getLong(1), new Breeder(rs.getLong(1), rs.getString(2), pobierzKraj(rs.getInt(3))));
 			
 			}
-			con.close();
 			return kolekcja;
 			
 			
@@ -65,7 +67,6 @@ public class KolekcjeIOperacje {
 	}
 	public static Map<Integer ,Horse> pobierzKolekcjeKonizBazy() {
 		try{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 			Map<Integer ,Horse> kolekcja = new HashMap<Integer ,Horse>();
 			String queryStr = "SELECT * FROM HORSE";
 			Statement stmt = con.createStatement();
@@ -74,7 +75,6 @@ public class KolekcjeIOperacje {
 				kolekcja.put((int) rs.getLong(1),new Horse(rs.getLong(1), rs.getString(2), Sex.valueOf(rs.getInt(3)), new DateOfBirth(rs.getDate(5)), pobierzKolor(rs.getInt(4)), pobierzKonia(rs.getInt(8)), pobierzKonia(rs.getInt(7)),pobierzHodowce(rs.getInt(9)) ));
 			
 			}
-			con.close();
 			return kolekcja;
 			
 			
@@ -88,20 +88,18 @@ public class KolekcjeIOperacje {
 	}
 	
 	public static Horse pobierzKonia(int int1) {
-		try{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
-			
+		try{		
 			String queryStr = "SELECT * FROM HORSE WHERE id="+int1;
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(queryStr);
 			if(rs.next())	{
-				con.close();
+			
 				return new Horse(rs.getLong(1), rs.getString(2), Sex.valueOf(rs.getInt(3)), new DateOfBirth(rs.getDate(5)), pobierzKolor(rs.getInt(4)), pobierzKonia(rs.getInt(8)), pobierzKonia(rs.getInt(7)),pobierzHodowce(rs.getInt(9)) );
 			
 			}
 			else 
 			{
-				con.close();
+			
 				return null;
 			}
 			
@@ -116,7 +114,7 @@ public class KolekcjeIOperacje {
 		}
 	public static Breeder pobierzHodowce(int int1) {
 		try{
-		Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+
 		
 		String queryStr = "SELECT * FROM BREEDER WHERE ID="+int1;
 		Statement stmt = con.createStatement();
@@ -127,7 +125,7 @@ public class KolekcjeIOperacje {
 		}
 		else
 		{
-			con.close();
+		
 			return null;
 		}
 		}
@@ -139,7 +137,7 @@ public class KolekcjeIOperacje {
 	public static Country pobierzKraj(int int1) {
 		try
 		{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+
 			
 			String queryStr = "SELECT * FROM COUNTRY WHERE ID="+int1;
 			Statement stmt = con.createStatement();
@@ -150,7 +148,7 @@ public class KolekcjeIOperacje {
 			}
 			else
 			{
-				con.close();
+
 				return null;
 			}
 			}
@@ -161,7 +159,6 @@ public class KolekcjeIOperacje {
 	}
 	public static List<Color> pobierzKoloryZBazy() {
 		try	{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 			List<Color> kolekcja = new ArrayList<Color>();
 			String queryStr = "SELECT * FROM COLOR";
 			Statement stmt = con.createStatement();
@@ -170,7 +167,6 @@ public class KolekcjeIOperacje {
 				kolekcja.add(new Color(rs.getInt(1), rs.getString(2), rs.getString(3)));
 			}
 			
-			con.close();
 			return kolekcja;
 		}
 		catch (Exception ex)	{
@@ -182,7 +178,6 @@ public class KolekcjeIOperacje {
 	}
 	public static void wpiszKoniaDoBazy(Horse kon) {
 		try{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 			
 			String queryStr = "INSERT INTO HORSE (NAME , SEX, COLOR , DOB, YEARONLY, DAM, SIRE , BREEDER) VALUES(?,?,?,?,?,?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(queryStr);
@@ -215,7 +210,7 @@ public class KolekcjeIOperacje {
 			System.out.println("Błąd przy zapise rodzicow (nadano zle dane rodzicow)");
 			}
 			
-			con.close();
+		
 			}
 			
 			
@@ -229,15 +224,14 @@ public class KolekcjeIOperacje {
 	}
 	public static Color pobierzKolor(int int1) {
 		try{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+
 			String queryStr = "SELECT * FROM COLOR WHERE id="+int1;
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(queryStr);
 			if(rs.next())	{
 				return new Color(rs.getLong(1), rs.getString(2), rs.getString(3));
 			}
-			con.close();
-			
+		
 		}
 		catch(Exception ex)	{
 			System.out.println(ex.getMessage());
@@ -248,7 +242,6 @@ public class KolekcjeIOperacje {
 	public static void dopiszHodowce(Breeder hodowca) {
 		try{
 			
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 			
 			String queryStr = "INSERT INTO BREEDER (NAME , COUNTRY) VALUES (?,?)";
 			PreparedStatement stmt = con.prepareStatement(queryStr);
@@ -259,7 +252,6 @@ public class KolekcjeIOperacje {
 			stmt.executeUpdate();
 			
 			
-			con.close();
 			}
 			
 			
@@ -274,7 +266,6 @@ public class KolekcjeIOperacje {
 	public static void dopiszKraj(Country kraj) {
 		try{
 			
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 			
 			String queryStr = "INSERT INTO COUNTRY (NAME , CODE) VALUES (?,?)";
 			PreparedStatement stmt = con.prepareStatement(queryStr);
@@ -283,7 +274,7 @@ public class KolekcjeIOperacje {
 	        	
 			stmt.executeUpdate();
 				
-			con.close();
+
 			}
 			
 			
@@ -379,7 +370,6 @@ public class KolekcjeIOperacje {
 
 	public static void modyfikujWpisHodowcy(int wybor ,Breeder hodowca) {
 		try        {
-	        Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 	        String queryStr = "UPDATE BREEDER SET NAME=(?), COUNTRY=(?) WHERE ID=(?)";
 	        PreparedStatement stmt = con.prepareStatement(queryStr);
 	        stmt.setString(1, hodowca.getName());
@@ -407,7 +397,7 @@ public class KolekcjeIOperacje {
 	public static void dopiszKolor(Color color) {
 		try{
 			
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+
 			
 			String queryStr = "INSERT INTO COLOR (LNAME , SNAME) VALUES (?,?)";
 			PreparedStatement stmt = con.prepareStatement(queryStr);
@@ -415,8 +405,7 @@ public class KolekcjeIOperacje {
 	        stmt.setString(2, color.getSname());
 	        	
 			stmt.executeUpdate();
-				
-			con.close();
+		
 			}
 			
 			
@@ -430,7 +419,6 @@ public class KolekcjeIOperacje {
 
 	public static List<Country> pobierzKolekcjeKrajowZBazy() {
 		try{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 			List<Country> kolekcja = new ArrayList<Country>();
 			String queryStr = "SELECT * FROM COUNTRY";
 			Statement stmt = con.createStatement();
@@ -439,7 +427,6 @@ public class KolekcjeIOperacje {
 				kolekcja.add(new Country(rs.getInt(1), rs.getString(2), rs.getString(3)));
 			
 			}
-			con.close();
 			return kolekcja;
 			
 			
@@ -454,7 +441,6 @@ public class KolekcjeIOperacje {
 
 	public static List<Color> pobierzKolekcjeKolorowZBazy() {
 		try{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 			List<Color> kolekcja = new ArrayList<Color>();
 			String queryStr = "SELECT * FROM COLOR";
 			Statement stmt = con.createStatement();
@@ -463,7 +449,7 @@ public class KolekcjeIOperacje {
 				kolekcja.add(new Color(rs.getInt(1), rs.getString(2), rs.getString(3)));
 			
 			}
-			con.close();
+		
 			return kolekcja;
 			
 			
@@ -487,7 +473,6 @@ public class KolekcjeIOperacje {
 	public static void modyfikujWpisKraju(int wybor,
 			Country kraj) {
 		try        {
-	        Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 	        String queryStr = "UPDATE COUNTRY SET NAME=(?), CODE=(?) WHERE ID=(?)";
 	        PreparedStatement stmt = con.prepareStatement(queryStr);
 	        stmt.setString(1, kraj.getName());
@@ -506,7 +491,6 @@ public class KolekcjeIOperacje {
 			Color kolor) {
 
 		try        {
-	        Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
 	        String queryStr = "UPDATE COLOR SET LNAME=(?), SNAME=(?) WHERE ID=(?)";
 	        PreparedStatement stmt = con.prepareStatement(queryStr);
 	        stmt.setString(1, kolor.getLname());

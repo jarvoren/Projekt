@@ -1,13 +1,16 @@
 package mpr.proj;
 
 
+import mpr.proj.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+
+
 
 
 
@@ -21,9 +24,23 @@ import mpr.proj.pedigree.*;
 
 public class dataBaseOperations {
 
+	private static Connection con = getConnection();
 public static void dodajKonia() {
 	
 	KolekcjeIOperacje.wpiszKoniaDoBazy(KolekcjeIOperacje.pobierzKoniaOdUzytkownika());
+	
+}
+
+
+public static Connection getConnection() {
+	
+	try {
+		return DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");
+	} catch (SQLException e) {
+	
+		e.printStackTrace();
+	}
+	return null;
 }
 
 
@@ -119,7 +136,6 @@ public static void wygenerujRodowodKonia() {
 public static void kasujKonia(int wybor) {
 	
 	 try        {
-         Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
          String queryStr = "DELETE FROM HORSE WHERE ID=(?)";
          PreparedStatement stmt = con.prepareStatement(queryStr);
          stmt.setInt(1, wybor);
@@ -134,7 +150,6 @@ public static void kasujKonia(int wybor) {
 public static void kasujHodowce(int wybor) {
 	
 	 try        {
-         Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
          String queryStr = "DELETE FROM BREEDER WHERE ID=(?)";
          PreparedStatement stmt = con.prepareStatement(queryStr);
          stmt.setInt(1, wybor);
@@ -153,7 +168,6 @@ public static void dodajKolor() {
 public static void kasujKolor(int wybor) {
 	
 	 try        {
-         Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
          String queryStr = "DELETE FROM COLOR WHERE ID=(?)";
          PreparedStatement stmt = con.prepareStatement(queryStr);
          stmt.setInt(1, wybor);
@@ -179,7 +193,6 @@ List<Country> kolekcja =KolekcjeIOperacje.pobierzKolekcjeKrajowZBazy();
 public static void kasujKraj(int wybor) {
 	
 	 try        {
-         Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
          String queryStr = "DELETE FROM COUNTRY WHERE ID=(?)";
          PreparedStatement stmt = con.prepareStatement(queryStr);
          stmt.setInt(1, wybor);

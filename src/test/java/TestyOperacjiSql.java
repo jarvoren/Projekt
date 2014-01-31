@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
 
@@ -16,12 +17,28 @@ import mpr.proj.pedigree.Horse;
 import mpr.proj.pedigree.KolekcjeIOperacje;
 import mpr.proj.pedigree.Sex;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class TestyOperacjiSql {
-
 	
+	
+	
+	
+	private Connection con;
+	@Before
+	public void polaczenie(){
+		try{
+			
+			con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");
+		}
+		catch(Exception ex)	{
+			System.out.println(ex.getMessage());
+		}
+		}
+
 	@Test
 	public void testTabeliHodowca(){
 		
@@ -37,7 +54,7 @@ public class TestyOperacjiSql {
 		
 		
 		try{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+			
 			String queryStr = "SELECT * FROM BREEDER WHERE NAME='"+test+"'";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(queryStr);
@@ -54,7 +71,7 @@ public class TestyOperacjiSql {
 			dataBaseOperations.kasujHodowce(rs.getInt(1));
 			assertEquals(null ,KolekcjeIOperacje.pobierzHodowce(rs.getInt(1)));
 			
-			con.close();
+		
 			
 		}
 		catch(Exception ex)	{
@@ -77,7 +94,7 @@ public class TestyOperacjiSql {
 		
 		
 		try{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+			
 			String queryStr = "SELECT * FROM HORSE WHERE NAME='"+test+"'";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(queryStr);
@@ -94,7 +111,7 @@ public class TestyOperacjiSql {
 			dataBaseOperations.kasujKonia(rs.getInt(1));
 			assertEquals(null ,KolekcjeIOperacje.pobierzKonia(rs.getInt(1)));
 			
-			con.close();
+		
 			
 		}
 		catch(Exception ex)	{
@@ -118,7 +135,7 @@ public class TestyOperacjiSql {
 		
 		
 		try{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+			
 			String queryStr = "SELECT * FROM COUNTRY WHERE NAME='"+test1+"'";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(queryStr);
@@ -135,7 +152,6 @@ public class TestyOperacjiSql {
 			dataBaseOperations.kasujKraj(rs.getInt(1));
 			assertEquals(null ,KolekcjeIOperacje.pobierzKraj(rs.getInt(1)));
 			
-			con.close();
 			
 		}
 		catch(Exception ex)	{
@@ -160,7 +176,7 @@ public class TestyOperacjiSql {
 		
 		
 		try{
-			Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb","sa","");;
+			
 			String queryStr = "SELECT * FROM COLOR WHERE LNAME='"+test1+"'";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(queryStr);
@@ -177,7 +193,7 @@ public class TestyOperacjiSql {
 			dataBaseOperations.kasujKolor(rs.getInt(1));
 			assertEquals(null ,KolekcjeIOperacje.pobierzKolor(rs.getInt(1)));
 			
-			con.close();
+
 			
 		}
 		catch(Exception ex)	{
@@ -185,6 +201,15 @@ public class TestyOperacjiSql {
 		}
 		
 		}
+	@After
+	public void zamknij(){
+		try {
+			con.close();
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
+	}
 	
 		
 	}
